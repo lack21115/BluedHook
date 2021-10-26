@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.lack.bluedhook">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="BluedHook"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true">
+        <meta-data android:name="xposedmodule" android:value="true" />
+        <meta-data android:name="xposeddescription" android:value="把Blued闪照转换成普通图片" />
+        <meta-data android:name="xposedminversion" android:value="53" />
+    </application>
+</manifest>
