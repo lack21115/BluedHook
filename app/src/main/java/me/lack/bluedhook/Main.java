@@ -54,7 +54,6 @@ public class Main implements IXposedHookLoadPackage {
                         String flashPath = XposedHelpers.callMethod(instance, "a", obj).toString();
                         XposedHelpers.setShortField(obj, "msgType", (short)2);
                         XposedHelpers.setObjectField(obj, "msgContent", flashPath);
-                        XposedHelpers.setAdditionalInstanceField(obj, "notify", RECALL_BURNING_PIC); //?
                     }
                 }
 
