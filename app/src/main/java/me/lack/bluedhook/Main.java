@@ -27,6 +27,7 @@ public class Main implements IXposedHookLoadPackage {
 
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
         if (!lpparam.packageName.equals(pkgName1) && !lpparam.packageName.equals(pkgName2)) return;
+        lpparam.packageName = pkgName1;
 
         XposedBridge.log("zzz pkg" + lpparam.packageName);
 
