@@ -56,6 +56,25 @@ public class Main implements IXposedHookLoadPackage {
                         XposedHelpers.setShortField(obj, "msgType", (short)2);
                         XposedHelpers.setObjectField(obj, "msgContent", flashPath);
                     }
+
+                    if ("".equals(msgContent.toString()) continue;
+
+                    if (msgType == 55) {
+                        String key = "61C0A240C4AF5F16DA0738512255BA16";
+                        if (msgContent.contains(key)) {
+                            String data = msgContent.split(key)
+                            XposedHelpers.setObjectField(obj, "msgContent", data[0])
+                            XposedHelpers.setShortField(obj, "msgType", Short.parseShort(data[1]))
+                        } else if (msgContent.contains("blued-burn")) {
+                            XposedHelpers.setShortField(obj, "msgType", 24)
+                        } else if (msgContent.contains("blued-chatfiles") && (msgContent.contains("jpg") || msgContent.contains("png"))) {
+                            XposedHelpers.setShortField(obj, "msgType", 2)
+                        } else if (msgContent.contains("blued-chatfiles") && (msgContent.contains("mp3"))) {
+                            XposedHelpers.setShortField(obj, "msgType", 3)
+                        } else {
+                            XposedHelpers.setShortField(obj, "msgType", 1)
+                        }
+                    }
                 }
 
             }
