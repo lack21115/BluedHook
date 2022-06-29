@@ -21,9 +21,12 @@ public class Main implements IXposedHookLoadPackage {
     public static String MsgChattingPresent = ".ui.msg.presenter.MsgChattingPresent";
     public static String chatHelper = ".ui.msg.controller.tools.ChatHelperV4";
 
-    public static int RECALL_BURNING_PIC = 1;
-    public static int RECALL_BURNING_VIDEO = 2;
-    public static int RECALL_MESSAGE = 0;
+    public static short MSG_TYPE_TEXT   = 1;
+    public static short MSG_TYPE_PIC    = 2;
+    public static short MSG_TYPE_MUSIC  = 3;
+    public static short MSG_TYPE_VIDEO  = 4;
+    public static short MSG_TYPE_BURN   = 24;
+    public static short MSG_TYPE_RECALL = 55;
 
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
         if (!lpparam.packageName.equals(pkgName1) && !lpparam.packageName.equals(pkgName2)) return;
@@ -42,37 +45,38 @@ public class Main implements IXposedHookLoadPackage {
                     boolean isSelf = (boolean)XposedHelpers.callMethod(obj, "isFromSelf");
                     short msgType = XposedHelpers.getShortField(obj, "msgType");
                     Object msgContent = XposedHelpers.getObjectField(obj, "msgContent");
-                    // XposedBridge.log("zzz type " + type);
-                    // XposedBridge.log("zzz msgContent " + msgContent.toString());
+                    XposedBridge.log("zzz type " + msgType);
+                    XposedBridge.log("zzz msgContent " + msgContent.toString());
                     if (isSelf && msgType == 1 && "test".equals(msgContent.toString())) {
                         XposedHelpers.setObjectField(obj, "msgContent", "hook");
                         continue;
                     }
                     if (isSelf) continue;
 
-                    if (msgType == 24) {
+                    if (msgType == MSG_TYPE_BURN) {
                         Object instance = XposedHelpers.callStaticMethod(XposedHelpers.findClass(classPath, classLoader[0]), "a");
                         String flashPath = XposedHelpers.callMethod(instance, "a", obj).toString();
-                        XposedHelpers.setShortField(obj, "msgType", (short)2);
-                        XposedHelpers.setObjectField(obj, "msgContent", flashPath);
+                        XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
+                        XposedHelpers.setObjectField(obj, "msgContentStr", flashPath);
                     }
 
-                    if ("".equals(msgContent.toString())) continue;
+                    String msgContentStr = msgContent.toString();
+                    if ("".equals(msgContentStr)) continue;
 
-                    if (msgType == 55) {
+                    if (msgType == MSG_TYPE_RECALL) {
                         String key = "61C0A240C4AF5F16DA0738512255BA16";
-                        if (msgContent.contains(key)) {
-                            String data = msgContent.split(key);
-                            XposedHelpers.setObjectField(obj, "msgContent", data[0]);
+                        if (msgContentStr.contains(key)) {
+                            String[] data = msgContentStr.split(key);
+                            XposedHelpers.setObjectField(obj, "msgContentStr", data[0]);
                             XposedHelpers.setShortField(obj, "msgType", Short.parseShort(data[1]));
-                        } else if (msgContent.contains("blued-burn")) {
-                            XposedHelpers.setShortField(obj, "msgType", 24);
-                        } else if (msgContent.contains("blued-chatfiles") && (msgContent.contains("jpg") || msgContent.contains("png"))) {
-                            XposedHelpers.setShortField(obj, "msgType", 2);
-                        } else if (msgContent.contains("blued-chatfiles") && (msgContent.contains("mp3"))) {
-                            XposedHelpers.setShortField(obj, "msgType", 3);
+                        } else if (msgContentStr.contains("blued-burn")) {
+                            XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_BURN);
+                        } else if (msgContentStr.contains("blued-chatfiles") && (msgContentStr.contains("jpg") || msgContentStr.contains("png"))) {
+                            XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
+                        } else if (msgContentStr.contains("blued-chatfiles") && (msgContentStr.contains("mp3"))) {
+                            XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_MUSIC);
                         } else {
-                            XposedHelpers.setShortField(obj, "msgType", 1);
+                            XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_TEXT);
                         }
                     }
                 }
