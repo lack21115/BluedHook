@@ -46,8 +46,9 @@ public class Main implements IXposedHookLoadPackage {
                     short msgType = XposedHelpers.getShortField(obj, "msgType");
                     Object msgContent = XposedHelpers.getObjectField(obj, "msgContent");
                     XposedBridge.log("zzz type " + msgType);
-                    XposedBridge.log("zzz msgContent " + msgContent.toString());
-                    if (isSelf && msgType == 1 && "test".equals(msgContent.toString())) {
+                    String msgContentStr = msgContent.toString();
+                    XposedBridge.log("zzz msgContent " + msgContentStr);
+                    if (isSelf && msgType == 1 && "test".equals(msgContentStr)) {
                         XposedHelpers.setObjectField(obj, "msgContent", "hook");
                         continue;
                     }
@@ -57,17 +58,17 @@ public class Main implements IXposedHookLoadPackage {
                         Object instance = XposedHelpers.callStaticMethod(XposedHelpers.findClass(classPath, classLoader[0]), "a");
                         String flashPath = XposedHelpers.callMethod(instance, "a", obj).toString();
                         XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
-                        XposedHelpers.setObjectField(obj, "msgContentStr", flashPath);
+                        XposedHelpers.setObjectField(obj, "msgContent", flashPath);
                     }
 
-                    String msgContentStr = msgContent.toString();
                     if ("".equals(msgContentStr)) continue;
 
                     if (msgType == MSG_TYPE_RECALL) {
+                        /*
                         String key = "61C0A240C4AF5F16DA0738512255BA16";
                         if (msgContentStr.contains(key)) {
                             String[] data = msgContentStr.split(key);
-                            XposedHelpers.setObjectField(obj, "msgContentStr", data[0]);
+                            XposedHelpers.setObjectField(obj, "msgContent", data[0]);
                             XposedHelpers.setShortField(obj, "msgType", Short.parseShort(data[1]));
                         } else if (msgContentStr.contains("blued-burn")) {
                             XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_BURN);
@@ -75,6 +76,12 @@ public class Main implements IXposedHookLoadPackage {
                             XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
                         } else if (msgContentStr.contains("blued-chatfiles") && (msgContentStr.contains("mp3"))) {
                             XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_MUSIC);
+                        */
+                        if (msgContentStr.startsWith("RU")) {
+                            Object instance = XposedHelpers.callStaticMethod(XposedHelpers.findClass(classPath, classLoader[0]), "a");
+                            String flashPath = XposedHelpers.callMethod(instance, "a", obj).toString();
+                            XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
+                            XposedHelpers.setObjectField(obj, "msgContent", flashPath);
                         } else {
                             XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_TEXT);
                         }
