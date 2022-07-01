@@ -21,9 +21,13 @@ public class Main implements IXposedHookLoadPackage {
     public static String MsgChattingPresent = ".ui.msg.presenter.MsgChattingPresent";
     public static String chatHelper = ".ui.msg.controller.tools.ChatHelperV4";
 
-    public static int RECALL_BURNING_PIC = 1;
-    public static int RECALL_BURNING_VIDEO = 2;
-    public static int RECALL_MESSAGE = 0;
+    public static short MSG_TYPE_TEXT       = 1;
+    public static short MSG_TYPE_PIC        = 2;
+    public static short MSG_TYPE_MUSIC      = 3;
+    public static short MSG_TYPE_VIDEO      = 5;
+    public static short MSG_TYPE_BURN_IMG   = 24;
+    public static short MSG_TYPE_BURN_VIDEO = 25;
+    public static short MSG_TYPE_RECALL     = 55;
 
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
         if (!lpparam.packageName.equals(pkgName1) && !lpparam.packageName.equals(pkgName2)) return;
@@ -37,24 +41,43 @@ public class Main implements IXposedHookLoadPackage {
             protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                 String classPath = lpparam.packageName + chatHelper;
                 XposedBridge.log("zzz pkg class1" + classPath);
+                Object instance = XposedHelpers.callStaticMethod(XposedHelpers.findClass(classPath, classLoader[0]), "a");
                 List<Object> lst = (List<Object>)param.args[0];
                 for (Object obj: lst) {
                     boolean isSelf = (boolean)XposedHelpers.callMethod(obj, "isFromSelf");
                     short msgType = XposedHelpers.getShortField(obj, "msgType");
                     Object msgContent = XposedHelpers.getObjectField(obj, "msgContent");
-                    // XposedBridge.log("zzz type " + type);
-                    // XposedBridge.log("zzz msgContent " + msgContent.toString());
-                    if (isSelf && msgType == 1 && "test".equals(msgContent.toString())) {
+                    XposedBridge.log("zzz type " + msgType);
+                    String msgContentStr = msgContent.toString();
+                    XposedBridge.log("zzz msgContent " + msgContentStr);
+                    if (isSelf && msgType == MSG_TYPE_TEXT && "test".equals(msgContentStr)) {
                         XposedHelpers.setObjectField(obj, "msgContent", "hook");
                         continue;
                     }
                     if (isSelf) continue;
 
-                    if (msgType == 24) {
-                        Object instance = XposedHelpers.callStaticMethod(XposedHelpers.findClass(classPath, classLoader[0]), "a");
+                    if (msgType == MSG_TYPE_BURN_IMG) {
                         String flashPath = XposedHelpers.callMethod(instance, "a", obj).toString();
-                        XposedHelpers.setShortField(obj, "msgType", (short)2);
+                        XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
                         XposedHelpers.setObjectField(obj, "msgContent", flashPath);
+                    }
+
+                    if (msgType == MSG_TYPE_BURN_VIDEO) {
+                        String flashPath = XposedHelpers.callMethod(instance, "b", obj).toString();
+                        XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_VIDEO);
+                        XposedHelpers.setObjectField(obj, "msgContent", flashPath);
+                    }
+
+                    if ("".equals(msgContentStr)) continue;
+
+                    if (msgType == MSG_TYPE_RECALL) {
+                        if (msgContentStr.startsWith("RU")) {
+                            String flashPath = XposedHelpers.callMethod(instance, "a", obj).toString();
+                            XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
+                            XposedHelpers.setObjectField(obj, "msgContent", flashPath);
+                        } else {
+                            XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_TEXT);
+                        }
                     }
                 }
 
