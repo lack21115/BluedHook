@@ -20,15 +20,19 @@ public class MsgMethodHook extends XC_MethodHook {
     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
         String classPath = Main.pkgName1 + Main.chatHelper;
         XposedBridge.log("zzz pkg class1" + classPath);
+
         Object instance = XposedHelpers.callStaticMethod(XposedHelpers.findClass(classPath, Main.classLoader), "a");
         List<Object> lst = (List<Object>)param.args[0];
+
         for (Object obj: lst) {
             boolean isSelf = (boolean)XposedHelpers.callMethod(obj, "isFromSelf");
             short msgType = XposedHelpers.getShortField(obj, "msgType");
             Object msgContent = XposedHelpers.getObjectField(obj, "msgContent");
-            XposedBridge.log("zzz type " + msgType);
             String msgContentStr = msgContent.toString();
+
+            XposedBridge.log("zzz type " + msgType);
             XposedBridge.log("zzz msgContent " + msgContentStr);
+
             if (isSelf && msgType == MSG_TYPE_TEXT && "test".equals(msgContentStr)) {
                 XposedHelpers.setObjectField(obj, "msgContent", "hook");
                 continue;
