@@ -43,12 +43,14 @@ public class MsgMethodHook extends XC_MethodHook {
                 String flashPath = XposedHelpers.callMethod(instance, "a", obj).toString();
                 XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
                 XposedHelpers.setObjectField(obj, "msgContent", flashPath);
+                XposedHelpers.setAdditionalInstanceField(obj, "notify", "对方发来一张闪照");
             }
 
             if (msgType == MSG_TYPE_BURN_VIDEO) {
                 String flashPath = XposedHelpers.callMethod(instance, "b", obj).toString();
                 XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_VIDEO);
                 XposedHelpers.setObjectField(obj, "msgContent", flashPath);
+                XposedHelpers.setAdditionalInstanceField(obj, "notify", "对方发来一个闪拍");
             }
 
             if ("".equals(msgContentStr)) continue;
@@ -61,6 +63,7 @@ public class MsgMethodHook extends XC_MethodHook {
                 } else {
                     XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_TEXT);
                 }
+                XposedHelpers.setAdditionalInstanceField(obj, "notify", "对方撤回了一条消息");
             }
         }
 

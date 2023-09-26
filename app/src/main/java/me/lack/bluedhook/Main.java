@@ -16,6 +16,7 @@ public class Main implements IXposedHookLoadPackage {
     public static String pkgName2 = "com.danlan.xiaolan";
     public static String WrapperProxy = ".MyWrapperProxyApplication";
     public static String MsgChattingPresent = ".ui.msg.presenter.MsgChattingPresent";
+    public static String MsgNotifyPresent = ".ui.msg.adapter.MessageChatAdapter";
     public static String chatHelper = ".ui.msg.controller.tools.ChatHelperV4";
     public static ClassLoader classLoader;
 
@@ -25,9 +26,10 @@ public class Main implements IXposedHookLoadPackage {
         XposedBridge.log("zzz pkg" + lpparam.packageName);
 
         XC_MethodHook methodHook1 = new MsgMethodHook();
-        XC_MethodHook methodHook2 = new ContextMethodHook(methodHook1);
+        XC_MethodHook methodHook2 = new MethodHookNotify();
+        XC_MethodHook methodHook = new ContextMethodHook(methodHook1, methodHook2);
 
         //findAndHookMethod(WrapperProxy, lpparam.classLoader, "attachBaseContext", new XC_MethodHook() {
-        findAndHookMethod(ContextWrapper.class, "attachBaseContext", Context.class, methodHook2);
+        findAndHookMethod(ContextWrapper.class, "attachBaseContext", Context.class, methodHook);
     }
 }
