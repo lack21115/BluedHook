@@ -13,12 +13,10 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
-
 public class MethodHookNotify extends XC_MethodHook {
 
     @Override
-    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+    protected void afterHookedMethod(MethodHookParam param) {
         XposedBridge.log("zzz 333 MethodHookNotify");
 
         ViewGroup root = (ViewGroup)param.getResult();
@@ -29,7 +27,7 @@ public class MethodHookNotify extends XC_MethodHook {
         Integer index = (Integer)param.args[0];
         Object message = data.get(index);
         String notifyText = (String)XposedHelpers.getAdditionalInstanceField(message, "notify");
-        View notify = MakeNotifyTextView(MethodHookContext.ctt, notifyText);
+        View notify = MakeNotifyTextView(Main.ctt, notifyText);
         root.addView(notify);
         param.setResult(root);
     }

@@ -17,7 +17,7 @@ public class MethodHookMsg extends XC_MethodHook {
     public static short MSG_TYPE_RECALL     = 55;
 
     @Override
-    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+    protected void beforeHookedMethod(MethodHookParam param) {
         String classPath = Main.pkgName1 + Main.chatHelper;
         XposedBridge.log("zzz pkg class1" + classPath);
 
