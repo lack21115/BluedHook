@@ -16,6 +16,8 @@ public class MethodHookMsg extends XC_MethodHook {
     public static short MSG_TYPE_BURN_VIDEO = 25;
     public static short MSG_TYPE_RECALL     = 55;
 
+    public static String ADDITIONAL_FIELD_NOTIFY = "notify";
+
     @Override
     protected void beforeHookedMethod(MethodHookParam param) {
         String classPath = Main.pkgName1 + Main.chatHelper;
@@ -43,14 +45,14 @@ public class MethodHookMsg extends XC_MethodHook {
                 String flashPath = XposedHelpers.callMethod(instance, "a", obj).toString();
                 XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_PIC);
                 XposedHelpers.setObjectField(obj, "msgContent", flashPath);
-                XposedHelpers.setAdditionalInstanceField(obj, "notify", "对方发来一张闪照");
+                XposedHelpers.setAdditionalInstanceField(obj, ADDITIONAL_FIELD_NOTIFY, "对方发来一张闪照");
             }
 
             if (msgType == MSG_TYPE_BURN_VIDEO) {
                 String flashPath = XposedHelpers.callMethod(instance, "b", obj).toString();
                 XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_VIDEO);
                 XposedHelpers.setObjectField(obj, "msgContent", flashPath);
-                XposedHelpers.setAdditionalInstanceField(obj, "notify", "对方发来一个闪拍");
+                XposedHelpers.setAdditionalInstanceField(obj, ADDITIONAL_FIELD_NOTIFY, "对方发来一个闪拍");
             }
 
             if ("".equals(msgContentStr)) continue;
@@ -63,7 +65,7 @@ public class MethodHookMsg extends XC_MethodHook {
                 } else {
                     XposedHelpers.setShortField(obj, "msgType", MSG_TYPE_TEXT);
                 }
-                XposedHelpers.setAdditionalInstanceField(obj, "notify", "对方撤回了一条消息");
+                XposedHelpers.setAdditionalInstanceField(obj, ADDITIONAL_FIELD_NOTIFY, "对方撤回了一条消息");
             }
         }
 

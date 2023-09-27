@@ -26,7 +26,7 @@ public class MethodHookNotify extends XC_MethodHook {
         List<Object> data = (List<Object>)XposedHelpers.getObjectField(param.thisObject, "a");
         Integer index = (Integer)param.args[0];
         Object message = data.get(index);
-        String notifyText = (String)XposedHelpers.getAdditionalInstanceField(message, "notify");
+        String notifyText = (String)XposedHelpers.getAdditionalInstanceField(message, MethodHookMsg.ADDITIONAL_FIELD_NOTIFY);
         View notify = MakeNotifyTextView(Main.ctt, notifyText);
         root.addView(notify);
         param.setResult(root);
