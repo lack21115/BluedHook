@@ -25,9 +25,9 @@ public class Main implements IXposedHookLoadPackage {
 
         XposedBridge.log("zzz pkg" + lpparam.packageName);
 
-        XC_MethodHook methodHook1 = new MsgMethodHook();
+        XC_MethodHook methodHook1 = new MethodHookMsg();
         XC_MethodHook methodHook2 = new MethodHookNotify();
-        XC_MethodHook methodHook = new ContextMethodHook(methodHook1, methodHook2);
+        XC_MethodHook methodHook = new MethodHookContext(methodHook1, methodHook2);
 
         //findAndHookMethod(WrapperProxy, lpparam.classLoader, "attachBaseContext", new XC_MethodHook() {
         findAndHookMethod(ContextWrapper.class, "attachBaseContext", Context.class, methodHook);

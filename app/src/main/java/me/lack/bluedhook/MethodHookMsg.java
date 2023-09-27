@@ -6,7 +6,7 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
-public class MsgMethodHook extends XC_MethodHook {
+public class MethodHookMsg extends XC_MethodHook {
 
     public static short MSG_TYPE_TEXT       = 1;
     public static short MSG_TYPE_PIC        = 2;

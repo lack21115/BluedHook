@@ -13,12 +13,12 @@ import de.robv.android.xposed.XposedBridge;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
-public class ContextMethodHook extends XC_MethodHook {
+public class MethodHookContext extends XC_MethodHook {
 
     public static Context ctt;
     List<XC_MethodHook> methodHooks = new ArrayList<>();
 
-    public ContextMethodHook(XC_MethodHook... methodHooks) {
+    public MethodHookContext(XC_MethodHook... methodHooks) {
         this.methodHooks.addAll(Arrays.asList(methodHooks));
         //this.methodHooks.add(methodHooks[0]);
         //this.methodHooks.add(methodHooks[1]);
