@@ -41,7 +41,13 @@ public class MethodHookNotify extends XC_MethodHook {
         textView.setText(s);
         textView.setTextColor(Color.parseColor("#ADAFB0"));
         textView.setGravity(1);
-        textView.setPadding(20, 5, 20, 5);
+        float marginPercent = 4.5f; // dpi=320 -> 480 -> 4.5f
+        float densityDpi = context.getResources().getDisplayMetrics().densityDpi;
+        if (densityDpi != 540) {
+            densityDpi -= 540;
+            marginPercent += ((-densityDpi) / 10) * 0.105f;
+        }
+        textView.setPadding((int) (context.getResources().getDisplayMetrics().widthPixels / marginPercent), 5, 20, 5);
 
         ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         //layoutParams.setMargins(60, 40, 60, 0);
