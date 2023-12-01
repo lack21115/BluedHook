@@ -2,7 +2,11 @@
 
 这是一个 Xposed 模块
 
-最新版下载 [BluedHook-3.10.apk](https://github.com/lack21115/BluedHook/releases/download/v3.10/BluedHook-3.10.apk)
+讨论群：https://t.me/bluedhook
+
+
+
+最新版下载 [BluedHook-3.11.apk](https://github.com/lack21115/BluedHook/releases/download/v3.11/BluedHook-3.11.apk)
 
 - [x] 自动将Blued发来的闪照转换成普通图片
 - [x] 自动将Blued发来的闪视频转换成普通视频
