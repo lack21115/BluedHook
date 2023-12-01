@@ -30,5 +30,7 @@ public class MethodHookContext extends XC_MethodHook {
         for (Method method: methods) {
             XposedHelpers.findAndHookMethod(Main.userInfo, Main.classLoader, method.getName(), new MethodHookVip());
         }
+
+        XposedHelpers.findAndHookMethod(Main.FlashPhotoManager, Main.classLoader, "b", new MethodHookFlash());
     }
 }

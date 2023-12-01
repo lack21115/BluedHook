@@ -24,6 +24,8 @@ public class Main implements IXposedHookLoadPackage {
     public static String userInfo         = "com.blued.android.module.common.user.model.UserInfo";
     public static String bluedLoginResult = "com.blued.android.module.common.user.model.BluedLoginResult";
 
+    public static String FlashPhotoManager = "com.soft.blued.ui.msg.manager.FlashPhotoManager";
+
     public static ClassLoader classLoader;
     public static Context ctt;
 
