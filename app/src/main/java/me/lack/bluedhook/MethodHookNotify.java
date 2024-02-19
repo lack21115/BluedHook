@@ -17,7 +17,7 @@ public class MethodHookNotify extends XC_MethodHook {
 
     @Override
     protected void afterHookedMethod(MethodHookParam param) {
-        XposedBridge.log("zzz 333 MethodHookNotify");
+        XposedBridge.log("[BluedHook] 333 MethodHookNotify");
 
         ViewGroup root = (ViewGroup)param.getResult();
         if (root.findViewWithTag(0x0000001) != null) {
@@ -37,7 +37,6 @@ public class MethodHookNotify extends XC_MethodHook {
 
         textView.setTag(1);
         textView.setTextSize(12.0f);
-        //textView.background = makeNotifyBackground()
         textView.setText(s);
         textView.setTextColor(Color.parseColor("#ADAFB0"));
         textView.setGravity(1);

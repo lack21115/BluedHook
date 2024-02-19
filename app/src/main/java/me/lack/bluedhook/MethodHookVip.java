@@ -8,8 +8,8 @@ public class MethodHookVip extends XC_MethodHook {
 
     @Override
     protected void afterHookedMethod(MethodHookParam param) {
-        XposedBridge.log("zzz 444 VipInfo");
         Object loginResult = param.getResult();
+        XposedBridge.log("[BluedHook] "+"VipInfo: Updated vip_grade to 2");
         XposedHelpers.setIntField(loginResult, "vip_grade", 2);
     }
 

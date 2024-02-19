@@ -8,7 +8,7 @@ public class MethodHookFlash extends XC_MethodHook {
 
     @Override
     protected void afterHookedMethod(MethodHookParam param) {
-        XposedBridge.log("zzz 555 Flash");
+        XposedBridge.log("[BluedHook] 555 Flash");
         Object FlashNumberModel = param.getResult();
         XposedHelpers.setIntField(FlashNumberModel, "flash_left_times", 99);
     }
