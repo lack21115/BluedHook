@@ -21,7 +21,7 @@ public class MethodHookMsg extends XC_MethodHook {
     @Override
     protected void beforeHookedMethod(MethodHookParam param) {
         String classPath = Main.pkgName1 + Main.chatHelper;
-        XposedBridge.log("zzz pkg class1" + classPath);
+        XposedBridge.log("[BluedHook] pkg class1" + classPath);
 
         Object instance = XposedHelpers.callStaticMethod(XposedHelpers.findClass(classPath, Main.classLoader), "a");
         List<Object> lst = (List<Object>)param.args[0];
@@ -32,8 +32,8 @@ public class MethodHookMsg extends XC_MethodHook {
             Object msgContent = XposedHelpers.getObjectField(obj, "msgContent");
             String msgContentStr = msgContent.toString();
 
-            XposedBridge.log("zzz type " + msgType);
-            XposedBridge.log("zzz msgContent " + msgContentStr);
+            XposedBridge.log("[BluedHook] type " + msgType);
+            XposedBridge.log("[BluedHook] msgContent " + msgContentStr);
 
             if (isSelf && msgType == MSG_TYPE_TEXT && "test".equals(msgContentStr)) {
                 XposedHelpers.setObjectField(obj, "msgContent", "hook");

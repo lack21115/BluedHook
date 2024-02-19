@@ -20,7 +20,7 @@ public class MethodHookContext extends XC_MethodHook {
         Main.ctt = (Context)param.args[0];
         Main.classLoader = Main.ctt.getClassLoader();
         String classPath = Main.pkgName1 + Main.chatHelper;
-        XposedBridge.log("zzz class0" + classPath);
+        XposedBridge.log("[BluedHook] class0" + classPath);
         findAndHookMethod(Main.pkgName1 + Main.MsgChattingPresent, Main.classLoader, "onMsgDataChanged", List.class, new MethodHookMsg());
         findAndHookMethod(Main.pkgName1 + Main.MsgNotifyPresent, Main.classLoader, "a", int.class, View.class, ViewGroup.class, new MethodHookNotify());
 
@@ -30,7 +30,14 @@ public class MethodHookContext extends XC_MethodHook {
         for (Method method: methods) {
             XposedHelpers.findAndHookMethod(Main.userInfo, Main.classLoader, method.getName(), new MethodHookVip());
         }
+//        跳过注册时人脸验证
+        XposedHelpers.findAndHookConstructor(resultClass, new MethodHookAdultIdentify());
+        XposedHelpers.findAndHookMethod(resultClass, "setNeedAdultVerify", int.class, new MethodHookAdultIdentify$2());
 
         XposedHelpers.findAndHookMethod(Main.FlashPhotoManager, Main.classLoader, "b", new MethodHookFlash());
+
+
+
+
     }
 }

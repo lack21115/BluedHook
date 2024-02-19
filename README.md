@@ -13,6 +13,7 @@
 - [x] 自动恢复被撤回的消息
 - [x] 解锁悄悄查看
 - [x] 解锁地图找人
+- [x] 跳过注册时成人验证
 - [x] 最高支持 [Blued-7.21.6.apk](https://github.com/lack21115/blued_versions/releases/download/blued/blued-7.21.6.apk)
 - [x] 最高支持 [Blued极速版-7.8.2.apk](https://github.com/lack21115/blued_versions/releases/download/blued-fast/blued-fast-7.8.2.apk)
 - [ ] 支持 Blued国际版？
